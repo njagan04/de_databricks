@@ -1,14 +1,14 @@
 {
   "evaluation": {
     "source": {
-      "name": "avg_trip_duration",
-      "display": "avg_trip_duration",
+      "name": "avg_fare",
+      "display": "avg_fare",
       "aggregation": "AGGREGATION_UNSPECIFIED"
     },
     "comparison_operator": "GREATER_THAN",
     "threshold": {
       "value": {
-        "double_value": 20.0
+        "double_value": 1.0
       }
     },
     "empty_result_state": "TRIGGERED",
@@ -21,8 +21,8 @@
     "timezone_id": "Asia/Calcutta"
   },
   "query_lines": [
-    "SELECT *",
-    "FROM gold_schema.nyctaxi_hourly_metrics",
-    "WHERE avg_trip_duration > 20;"
+    "select * from ",
+    "workspace.gold.nyctaxi_hourly_metrics",
+    "where avg_fare < 10;"
   ]
 }
