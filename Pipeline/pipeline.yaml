@@ -3,19 +3,38 @@ resources:
     pipeline:
       name: pipeline
       tasks:
-        - task_key: silver_flow
+        - task_key: silver_layer
           notebook_task:
             notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/02_silver/nb_silver
             source: WORKSPACE
-        - task_key: Gold_layer_FactDim_creation
+        - task_key: Gold_layer_basetable_extraction
           depends_on:
-            - task_key: silver_flow
+            - task_key: silver_layer
           notebook_task:
-            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/fact_dim_tables/fact_dim_creation
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/df_creation/01_base_tables
             source: WORKSPACE
-        - task_key: Gold_Layer_KPI
+        - task_key: Fact_table_creation
           depends_on:
-            - task_key: Gold_layer_FactDim_creation
+            - task_key: Gold_layer_basetable_extraction
+          notebook_task:
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/df_creation/02_fact_tables
+            source: WORKSPACE
+        - task_key: dim_table_creation
+          depends_on:
+            - task_key: Gold_layer_basetable_extraction
+          notebook_task:
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/df_creation/03_dim_tables
+            source: WORKSPACE
+        - task_key: fact_dim_datacube
+          depends_on:
+            - task_key: dim_table_creation
+            - task_key: Fact_table_creation
+          notebook_task:
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/df_creation/04_fact_dim_creation
+            source: WORKSPACE
+        - task_key: KPI_query_results
+          depends_on:
+            - task_key: fact_dim_datacube
           notebook_task:
             notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/kpi_query/kpi
             source: WORKSPACE
