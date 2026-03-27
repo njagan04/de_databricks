@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    pipeline:
+      name: pipeline
+      tasks:
+        - task_key: silver_flow
+          notebook_task:
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/02_silver/nb_silver
+            source: WORKSPACE
+        - task_key: Gold_layer_FactDim_creation
+          depends_on:
+            - task_key: silver_flow
+          notebook_task:
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/fact_dim_tables/fact_dim_creation
+            source: WORKSPACE
+        - task_key: Gold_Layer_KPI
+          depends_on:
+            - task_key: Gold_layer_FactDim_creation
+          notebook_task:
+            notebook_path: /Workspace/Users/nzenith08@gmail.com/de_databricks/03_gold/kpi_query/kpi
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
